@@ -1,50 +1,86 @@
-import React from "react";
-import Layout from "../components/layout";
-import Head from "next/head";
-import { motion } from "framer-motion";
+import React from 'react';
+import Layout from '../components/layout';
+import { NextSeo } from 'next-seo';
+import { motion } from 'framer-motion';
+import { FaGithub, FaMedium, FaDev, FaEnvelope, FaLinkedin } from 'react-icons/fa';
+import { SiHashnode } from 'react-icons/si';
 
 export default function About() {
-    return (
-        <Layout>
-            <Head>
-                <title>About</title>
-                <meta name="description" content="About me" />
-                <link rel="icon" href="/logo/logo-color.png" />
-            </Head>
-            <motion.div
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-            >
+  const socials = [
+    { name: 'GitHub', icon: <FaGithub />, link: 'https://github.com/spandzz' },
+    { name: 'Dev.to', icon: <FaDev />, link: 'https://dev.to/sehgalspandan' },
+    { name : "LinkeIn", icon: <FaLinkedin/>, link: "https://linkedin.com/in/sehgalspandan"},
+  ];
 
-                <div className="flex flex-col items-center font-sans justify-center p-10 mx-auto lg:w-2/3 ">
-                    <h1 className="text-5xl font-bold text-gray-900">About Me</h1>
+  return (
+    <Layout>
+      <NextSeo
+        title="About Me | Span41n"
+        description="Learn more about Spandan Sehgal, a passionate developer and student."
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="py-10 max-w-4xl mx-auto"
+      >
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            About Me
+          </h1>
+        </div>
 
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="prose dark:prose-invert max-w-none">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              Hello there! 👋
+            </h3>
+            
+            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              I&apos;m <span className="font-bold text-blue-600 dark:text-blue-400">Spandan Sehgal</span>, 
+              a passionate student and developer exploring the vast world of Information Technology.
+            </p>
 
-                    <p className="text-lg mb-4 mt-10"> <b className="text-xl">Hello there!</b> <br></br>
-                        I&apos;m <span className="font-semibold">Spandan Sehgal</span>, a student in 11th grade who&apos;s exploring this amazing and never-ending world of I.T. I am very curious about how things work and how I can recreate them in my own way. In my journey of 4 years of coding, I have learned basic webdev technologies like HTML, CSS, JS, and TailwindCSS. Currently, I am learning Python and NextJs. I regularly write blogs about some useful resources that I find on the net, about programming tutorials, and much more! I am always looking to help others and share my knowledge with the community. I aim at creating quality products and simplifying tasks!
-                   <br /> <div className="mt-10 text-xl space-x-5">
-                        My socials: 
-    <a href="https://medium.com/@spandansehgal" className="text-blue-500 hover:underline ">{" "}Medium</a>
-    <a href="https://dev.to/sehgalspandan" className="text-blue-500 hover:underline ">Dev.to</a>
-    <a href="https://hashnode.com/@sehgalspandan" className="text-blue-500 hover:underline ">Hashnode</a>
-    <a href="https://github.com/sehgalspandan" className="text-blue-500 hover:underline ">Github</a>
-    </div>
-                    </p>
+            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+              I have a deep curiosity for how things work and love rebuilding them to understand the mechanics. 
+              Over the past 4 years, I&apos;ve dived into web development, mastering HTML, CSS, JavaScript, and Tailwind CSS.
+              Currently, I&apos;m focusing on expanding my skills in <span className="font-semibold text-gray-900 dark:text-white">Python</span> and <span className="font-semibold text-gray-900 dark:text-white">Next.js</span>.
+            </p>
 
-                
-  <p className="text-lg">
-     </p>
+            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
+              Beyond coding, I regularly write blogs to share useful resources, tutorials, and insights. 
+              My goal is to create high-quality products that simplify tasks and to contribute back to the developer community.
+            </p>
+          </div>
 
-
-
-                    <div className="mt-10">
-                        <button className="border-indigo-600 border-2 px-8 py-2 mt-8 rounded-3xl hover:scale-105 transition-all ease-in-out text-indigo-600 font-semibold uppercase tracking-wide">
-                            Let&apos;s Connect
-                        </button>
-                    </div>
-                </div>
-            </motion.div>
-        </Layout>
-    );
+          <div className="mt-12">
+            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+              Connect with me
+            </h4>
+            <div className="flex flex-wrap justify-center gap-6">
+              {socials.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-all transform hover:-translate-y-1"
+                >
+                  <span className="text-xl">{social.icon}</span>
+                  <span className="font-medium">{social.name}</span>
+                </a>
+              ))}
+              <a
+                href="mailto:spandansehgal@gmail.com"
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
+              >
+                <span className="text-xl"><FaEnvelope /></span>
+                <span className="font-medium">Email Me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Layout>
+  );
 }

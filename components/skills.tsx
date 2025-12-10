@@ -1,115 +1,66 @@
-
-import React, { Fragment, useEffect } from "react";
-import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import Image from "next/image";
-
-const Skills = () => {
-  const divVariants = {
-    visible: {
-      opacity: 1,
-      transition: { duration: 0.5 },
-      y: 0,
-    },
-    hidden: {
-      opacity: 0,
-      y: 100,
-    },
-  };
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
-
-  return (
-    <Fragment>
-      <motion.div
-        // ref={ref}
-        // animate={controls}
-        // initial="hidden"
-        // variants={divVariants}
-        // exit={{
-        //   opacity: 0,
-        //   y: 100
-        // }}
-        className="px-5 mt-20"
-      >
-        <div className="text-center text-black text-3xl font-bold mb-4">My Skills</div>
-        <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-2  ">
-          {skills.map((skill) => (
-            <SkillCard
-              key={skill.name}
-              name={skill.name}
-              icon={skill.icon}
-            />
-          ))}
-        </div>
-      </motion.div>
-    </Fragment>
-  );
-};
-
-const SkillCard = ({ name, icon }: { name: string; icon: string }) => {
-  return (
-    <div className="ml-2 rounded-lg shadow-md py-4 px-10 hover:scale-90 hover:cursor-pointer hover:bg-gray-200 hover:shadow-xl border-r-8 border-black border-y border-x transition duration-300 w-full mx-auto lg:w-full">
-      <div className="text-lg font-bold mb-2 text-black">
-        {name}{" "}
-        {icon && (
-          <Image
-            src={icon}
-            className="w-10 h-10"
-            alt="Skill"
-            width="100"
-            height="100"
-          />
-        )}
-      </div>
-      <div className="text-gray-800" />
-    </div>
-  );
-};
+import React from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const skills = [
-  {
-    name: "HTML",
-    icon: "/html5.svg",
-  },
-  {
-    name: "CSS",
-    icon: "/css.svg",
-  },
-  {
-    name: "JS",
-    icon: "/js.svg",
-  },
-  {
-    name: "NextJs",
-    icon: "/nextjs.svg",
-  },
-  {
-    name: "Python",
-    icon: "/python.svg",
-  },
-  {
-    name: "Git",
-    icon: "/git.svg",
-  },
-  {
-    name: "Nodejs",
-    icon: "/nodejs.svg"
-  },
-  {
-    name: "Tailwind CSS",
-    icon: "/tailwindcss.svg"
-  },
-  {
-    name: "Wazuh",
-    icon: "/wazuh.svg"
-  }
+  { name: 'HTML', icon: '/html5.svg' },
+  { name: 'CSS', icon: '/css.svg' },
+  { name: 'JavaScript', icon: '/js.svg' },
+  { name: 'Next.js', icon: '/nextjs.svg' },
+  { name: 'Python', icon: '/python.svg' },
+  { name: 'Git', icon: '/git.svg' },
+  { name: 'Node.js', icon: '/nodejs.svg' },
+  { name: 'Tailwind CSS', icon: '/tailwindcss.svg' },
+  { name: 'Wazuh', icon: '/wazuh.svg' },
 ];
+
+const Skills = () => {
+  return (
+    <section className="py-24 bg-gray-50 dark:bg-dark-card/50 my-10 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-gray-900 dark:text-white mb-6">
+            Tech Stack
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            The tools, frameworks, and technologies I use to bring creative ideas to life.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              viewport={{ once: true }}
+              className="group flex flex-col items-center justify-center p-6 bg-white dark:bg-dark-bg rounded-2xl shadow-sm hover:shadow-xl dark:hover:shadow-primary-900/20 border border-gray-100 dark:border-gray-800 transition-all duration-300"
+            >
+              <div className="relative w-16 h-16 mb-4 grayscale group-hover:grayscale-0 transition-all duration-300">
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+              <span className="font-semibold text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                {skill.name}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Skills;

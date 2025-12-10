@@ -1,76 +1,119 @@
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
+import { IoMdMenu, IoMdClose } from 'react-icons/io';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { motion, AnimatePresence } from 'framer-motion';
 
-/* eslint-disable @next/next/no-html-link-for-pages */
-import React from 'react'
-import { useRouter } from 'next/router'
-
-
-
-
-export default function Navbar() {
+const Navbar = () => {
+    const [mounted, setMounted] = useState(false);
+    const { theme, setTheme, systemTheme } = useTheme();
+    const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
+
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'About', path: '/about' },
+        { name: 'Projects', path: '/projects' },
+        { name: 'Blog', path: '/blog' },
+    ];
+
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+
     return (
-        <div>
-            <div className="navbar font-sans   ">
-  <div className="navbar-start">
-  <img src="/logo/logo-no-bg.png" className='hidden md:block w-20 h-20 rounded-full' alt="" />
- 
+        <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 dark:bg-dark-bg/80 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-20">
+                    {/* Logo */}
+                    <Link href="/" className="flex-shrink-0 group">
+                        <span className="font-heading font-extrabold text-2xl tracking-tighter text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                            Span<span className="text-primary-600 dark:text-primary-400">41n</span>.
+                        </span>
+                    </Link>
 
-  </div>
-  <div className="navbar-center lg:flex">
-    <ul className="menu menu-horizontal px-1">
-      <li><a href='/' className={`text-lg  text-gray-700 mr-2   ${router.pathname === '/' ? 'underline underline-offset-8 ' : ''} hover:scale-110 transition-all ease-out`}> Home</a></li>
-      <li><a href='/about' className={`text-lg   text-gray-700    ${router.pathname === '/about' ? ' underline underline-offset-8' : ''} hover:scale-110 transition-all ease-out`}>About</a></li>  
-      <li><a href='/blog' className={`text-lg  text-gray-700    ${router.pathname === '/blog' ? ' underline underline-offset-8' : ''} hover:scale-110 transition-all ease-out`}>Blog</a></li>
-      <li><a href='/projects' className={`text-lg  text-gray-700    ${router.pathname === '/projects' ? ' underline underline-offset-8' : ''} hover:scale-110 transition-all ease-out`}>Projects</a></li>
-      {/* <li><a href='/utils' className='text-lg  text-gray-500  hover:scale-110 transition-all ease-out'>Utilities</a></li> */}
-      {/* <li><a href='/skills' className='text-lg  text-gray-500  hover:scale-110 transition-all ease-out'>Skills</a></li> */}
-    </ul>
-  </div>
-  <div className="navbar-end" />
-</div>
-        </div>
-    )
-}
+                    {/* Desktop Menu */}
+                    <div className="hidden md:flex items-center gap-8">
+                        {navLinks.map((link) => (
+                            <Link key={link.name} href={link.path}>
+                                <span className={`text-sm font-semibold transition-colors duration-200 
+                                    ${router.pathname === link.path 
+                                        ? 'text-primary-600 dark:text-primary-400' 
+                                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}
+                                `}>
+                                    {link.name}
+                                </span>
+                            </Link>
+                        ))}
+                        
+                        {mounted && (
+                            <button
+                                onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
+                                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                aria-label="Toggle Dark Mode"
+                            >
+                                {currentTheme === 'dark' ? <MdLightMode size={20} /> : <MdDarkMode size={20} />}
+                            </button>
+                        )}
+                    </div>
 
-// import React from 'react';
-// import { useRouter } from 'next/router';
-// import Link from 'next/link';
+                    {/* Mobile Toggle */}
+                    <div className="md:hidden flex items-center gap-4">
+                        {mounted && (
+                            <button
+                                onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
+                                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                            >
+                                {currentTheme === 'dark' ? <MdLightMode size={20} /> : <MdDarkMode size={20} />}
+                            </button>
+                        )}
+                        <button
+                            onClick={toggleMenu}
+                            className="p-2 text-gray-600 dark:text-gray-300 focus:outline-none"
+                            aria-label="Menu"
+                        >
+                            {isOpen ? <IoMdClose size={26} /> : <IoMdMenu size={26} />}
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-// export default function Navbar() {
-//     const router = useRouter();
+            {/* Mobile Menu */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="md:hidden bg-white dark:bg-dark-bg border-b border-gray-100 dark:border-gray-800 overflow-hidden"
+                    >
+                        <div className="px-4 pt-2 pb-6 space-y-2">
+                            {navLinks.map((link) => (
+                                <Link key={link.name} href={link.path}>
+                                    <span 
+                                        onClick={() => setIsOpen(false)}
+                                        className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors
+                                            ${router.pathname === link.path 
+                                                ? 'bg-primary-50 dark:bg-primary-900/10 text-primary-600 dark:text-primary-400' 
+                                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}
+                                        `}
+                                    >
+                                        {link.name}
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </nav>
+    );
+};
 
-//     return (
-//       <center>
-//         <div className="navbar font-sans "> {/* Added text-center class to center the navbar */}
-//             <div className="navbar-start">
-//                 <img src="/logo/logo-color.png" className='hidden md:block w-20 h-20 rounded-full' alt="" />
-//             </div>
-//             <div className="navbar-center lg:flex">
-//                 <ul className="menu menu-horizontal px-1">
-//                     <li>
-//                         <Link legacyBehavior href="/">
-//                             <a className={`text-lg text-gray-500 ${router.pathname === '/' ? 'underline' : ''}  hover:scale-110 transition-all ease-out`}>Home</a>
-//                         </Link>
-//                     </li>
-//                     <li>
-//                         <Link legacyBehavior href="/about">
-//                             <a className={`text-lg text-gray-500 ${router.pathname === '/about' ? 'underline' : ''}  hover:scale-110 transition-all ease-out`}>About</a>
-//                         </Link>
-//                     </li>
-//                     <li>
-//                         <Link legacyBehavior href="/blog">
-//                             <a className={`text-lg text-gray-500 ${router.pathname === '/blog' ? 'underline' : ''}  hover:scale-110 transition-all ease-out`}>Blog</a>
-//                         </Link>
-//                     </li>
-//                     <li>
-//                         <Link legacyBehavior href="/projects">
-//                             <a className={`text-lg text-gray-500 ${router.pathname === '/projects' ? 'underline' : ''}  hover:scale-110 transition-all ease-out`}>Projects</a>
-//                         </Link>
-//                     </li>
-//                 </ul>
-//             </div>
-//         </div>
-//         </center>
-//     );
-// }
+export default Navbar;

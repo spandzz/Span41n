@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://span41n.com
+
+# Sitemaps
+Sitemap: https://span41n.com/sitemap.xml

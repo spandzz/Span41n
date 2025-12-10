@@ -1,47 +1,50 @@
-import Head from "next/head";
-import Layout from "../components/layout";
-import Landing from "../components/landing";
-import Skills from "../components/skills";
-import Contact from "../components/contact";
-// import Blogs from "../components/Blogs";
-
-import Projects from "../components/project";
 import React from "react";
+import { NextSeo } from "next-seo";
+import Layout from "../components/layout";
+import Landing from "../components/Landing";
+import Skills from "../components/Skills";
+import Contact from "../components/Contact";
+import ProjectsList from "../components/ProjectsList";
+import { getProjects, Project } from "../lib/data";
 
-// import Contact from '../components/contact'
-export default function Home() {
+interface HomeProps {
+  projects: Project[];
+}
+
+export default function Home({ projects }: HomeProps) {
   return (
     <Layout>
-      <Head>
-        <title>Spandan Sehgal</title>
-        <meta
-          name="description"
-          content="My portfolio website with my latest blog"
-        />
-        <link rel="icon" href="/logo/logo.png" />
-        <meta
-          name="google-site-verification"
-          content="MTCdufNgJmf9kJAKcIrDJ5SEBN2MLzePtHJR0wgfHdE"
-        />
-        <meta name="keywords" content="span41n, spandan sehgal, spandyboss, span41n.vercel.app, Span41n, Spandan, Spandan Sehgal, software developer, spandan," />
-      </Head>
-
+      <NextSeo
+        title="Span41n | Developer & Creator"
+        description="Personal portfolio of Span41n. Full Stack Developer, Open Source Enthusiast, and Creator."
+        canonical="https://span41n.com/"
+      />
 
       <Landing />
-      <Skills />
-      <center>
-        <hr className="h-1 mt-10 w-96 bg-gray-300" />
-      </center>
-
-      <Projects />
       
-      <center>
-        <hr className="h-1 mt-10 w-96 bg-gray-300" />
-      </center>
+      <Skills />
+      
+      <div className="my-20">
+        <hr className="w-24 h-1 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full border-none" />
+      </div>
 
+      <ProjectsList projects={projects} />
+      
+      <div className="my-20">
+        <hr className="w-24 h-1 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full border-none" />
+      </div>
 
       <Contact />
 
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const projects = getProjects();
+  return {
+    props: {
+      projects,
+    },
+  };
 }
