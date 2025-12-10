@@ -108,7 +108,7 @@ const Blogs: React.FC<BlogsProps> = ({ posts }) => {
 
         {filteredPosts.length === 0 && (
           <div className="text-center text-gray-500 dark:text-gray-400 mt-12">
-            No posts found matching "{searchValue}".
+            No posts found matching &quot;{searchValue}&quot;.
           </div>
         )}
       </section>
